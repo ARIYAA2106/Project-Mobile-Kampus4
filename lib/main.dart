@@ -4,6 +4,7 @@ import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:kampus/page/profile_page.dart';
 import 'package:kampus/page/beranda_page.dart';
+import 'package:kampus/page/pertemuan%206/dashboard_page.dart';
 import 'package:kampus/page/list_page/list_page.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -24,7 +25,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Widget> _page = [BerandaPage(), ProfilePage(), ListPage()];
+  List<Widget> _page = [
+    BerandaPage(),
+    ProfilePage(),
+    ListPage(),
+    DashboardPage(),
+  ];
 
   int currentPage = 0;
   @override
@@ -58,6 +64,11 @@ class _MyAppState extends State<MyApp> {
             SalomonBottomBarItem(
               icon: Icon(Icons.list),
               title: Text("List"),
+              selectedColor: Colors.blue,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.list),
+              title: Text("Dashboard"),
               selectedColor: Colors.blue,
             ),
           ],
