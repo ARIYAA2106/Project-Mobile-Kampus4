@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kampus/page/list_page/list_page.dart';
 import 'package:kampus/page/pertemuan 6/pertemuan6.dart';
 import 'package:kampus/page/pertemuan%207/pertemuan7.dart';
+import 'package:kampus/page/pertemuan%208/auto_complete.dart';
 // import 'package:latihan6/pertemuan/pertemuan5.dart';
 // import 'package:latihan6/pertemuan/pertemuan6.dart';
 // import 'package:latihan6/pertemuan/pertemuan7.dart';
@@ -9,6 +10,32 @@ import 'package:kampus/page/pertemuan%207/pertemuan7.dart';
 
 class DashboardPage extends StatelessWidget {
   final List<Map<String, dynamic>> menuItems = [
+    {
+      "title": "Pertemuan 1",
+      "icon": Icons.auto_stories,
+      "color": Colors.blue,
+      "page": ListPage(),
+    },
+    {
+      "title": "Pertemuan 2",
+      "icon": Icons.auto_stories,
+      "color": Colors.blue,
+      "page": ListPage(),
+    },
+    {
+      "title": "Pertemuan 3",
+      "icon": Icons.auto_stories,
+      "color": Colors.blue,
+      "page": ListPage(),
+    },
+
+    {
+      "title": "Pertemuan 4",
+      "icon": Icons.auto_stories,
+      "color": Colors.blue,
+      "page": ListPage(),
+    },
+
     {
       "title": "Pertemuan 5",
       "icon": Icons.auto_stories,
@@ -27,12 +54,12 @@ class DashboardPage extends StatelessWidget {
       "color": Colors.orange,
       "page": RadiobuttonPage(),
     },
-    // {
-    //   "title": "Pertemuan 8",
-    //   "icon": Icons.auto_stories,
-    //   "color": Colors.purple,
-    //   "page": AutocompletespinPage(),
-    // },
+    {
+      "title": "Pertemuan 8",
+      "icon": Icons.auto_stories,
+      "color": Colors.purple,
+      "page": AutocompletespinPage(),
+    },
   ];
 
   @override

@@ -1,3 +1,4 @@
+import 'package:kampus/page/pertemuan%208/auto_complete.dart';
 import 'package:simple_alert_dialog/simple_alert_dialog.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 
@@ -30,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     ProfilePage(),
     ListPage(),
     DashboardPage(),
+    AutocompletespinPage(),
   ];
 
   int currentPage = 0;
@@ -69,6 +71,13 @@ class _MyAppState extends State<MyApp> {
             SalomonBottomBarItem(
               icon: Icon(Icons.list),
               title: Text("Dashboard"),
+              selectedColor: Colors.blue,
+            ),
+
+            // Auto Complete
+            SalomonBottomBarItem(
+              icon: Icon(Icons.search),
+              title: Text("Search"),
               selectedColor: Colors.blue,
             ),
           ],
