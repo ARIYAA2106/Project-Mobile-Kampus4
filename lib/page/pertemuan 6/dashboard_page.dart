@@ -3,6 +3,7 @@ import 'package:kampus/page/list_page/list_page.dart';
 import 'package:kampus/page/pertemuan 6/pertemuan6.dart';
 import 'package:kampus/page/pertemuan%207/pertemuan7.dart';
 import 'package:kampus/page/pertemuan%208/auto_complete.dart';
+import 'package:kampus/page/pertemuan%209/pertemuan9.dart';
 // import 'package:latihan6/pertemuan/pertemuan5.dart';
 // import 'package:latihan6/pertemuan/pertemuan6.dart';
 // import 'package:latihan6/pertemuan/pertemuan7.dart';
@@ -59,6 +60,12 @@ class DashboardPage extends StatelessWidget {
       "icon": Icons.auto_stories,
       "color": Colors.purple,
       "page": AutocompletespinPage(),
+    },
+    {
+      "title": "Pertemuan 9",
+      "icon": Icons.auto_stories,
+      "color": Colors.purple,
+      "page": Pertemuan9Page(),
     },
   ];
 

@@ -26,13 +26,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Widget> _page = [
-    BerandaPage(),
-    ProfilePage(),
-    ListPage(),
-    DashboardPage(),
-    AutocompletespinPage(),
-  ];
+  List<Widget> _page = [BerandaPage(), ProfilePage(), DashboardPage()];
 
   int currentPage = 0;
   @override
@@ -62,22 +56,9 @@ class _MyAppState extends State<MyApp> {
               selectedColor: Colors.blue,
             ),
 
-            // List
-            SalomonBottomBarItem(
-              icon: Icon(Icons.list),
-              title: Text("List"),
-              selectedColor: Colors.blue,
-            ),
             SalomonBottomBarItem(
               icon: Icon(Icons.list),
               title: Text("Dashboard"),
-              selectedColor: Colors.blue,
-            ),
-
-            // Auto Complete
-            SalomonBottomBarItem(
-              icon: Icon(Icons.search),
-              title: Text("Search"),
               selectedColor: Colors.blue,
             ),
           ],
