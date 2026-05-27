@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/column_widget.dart';
+import 'package:kampus/page/beranda_page.dart';
 import 'package:kampus/page/list_page/list_page.dart';
 import 'package:kampus/page/pertemuan 6/pertemuan6.dart';
+import 'package:kampus/page/pertemuan%2010/home_page.dart';
 import 'package:kampus/page/pertemuan%207/pertemuan7.dart';
 import 'package:kampus/page/pertemuan%208/auto_complete.dart';
 import 'package:kampus/page/pertemuan%209/pertemuan9.dart';
-// import 'package:latihan6/pertemuan/pertemuan5.dart';
-// import 'package:latihan6/pertemuan/pertemuan6.dart';
-// import 'package:latihan6/pertemuan/pertemuan7.dart';
-// import 'package:latihan6/pertemuan/pertemuan8.dart';
+import 'package:kampus/row_widget.dart';
+import 'package:kampus/ui/produk_form.dart';
 
 class DashboardPage extends StatelessWidget {
   final List<Map<String, dynamic>> menuItems = [
@@ -15,26 +16,26 @@ class DashboardPage extends StatelessWidget {
       "title": "Pertemuan 1",
       "icon": Icons.auto_stories,
       "color": Colors.blue,
-      "page": ListPage(),
+      "page": ColumnWidget(),
     },
     {
       "title": "Pertemuan 2",
       "icon": Icons.auto_stories,
       "color": Colors.blue,
-      "page": ListPage(),
+      "page": RowWidget(),
     },
     {
       "title": "Pertemuan 3",
       "icon": Icons.auto_stories,
       "color": Colors.blue,
-      "page": ListPage(),
+      "page": ProdukForm(),
     },
 
     {
       "title": "Pertemuan 4",
       "icon": Icons.auto_stories,
       "color": Colors.blue,
-      "page": ListPage(),
+      "page": BerandaPage(),
     },
 
     {
@@ -66,6 +67,12 @@ class DashboardPage extends StatelessWidget {
       "icon": Icons.auto_stories,
       "color": Colors.purple,
       "page": Pertemuan9Page(),
+    },
+    {
+      "title": "Pertemuan 10",
+      "icon": Icons.auto_stories,
+      "color": Colors.purple,
+      "page": HomePage(),
     },
   ];
 

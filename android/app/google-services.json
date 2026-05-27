@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023280259929",
+    "project_id": "aplikasi-katalog-flutter-9f851",
+    "storage_bucket": "aplikasi-katalog-flutter-9f851.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023280259929:android:e2f3fcc5a5cdb3001aa248",
+        "android_client_info": {
+          "package_name": "com.example.kampus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw9XVjQJzAqLWAjcFTxZ1otQ6UmmPYMks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
