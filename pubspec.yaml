@@ -43,6 +43,11 @@ dependencies:
   intl: ^0.20.2
   firebase_core: ^4.9.0
   firebase_auth: ^6.5.1
+  google_sign_in: ^7.2.0
+  email_validator: ^3.0.0
+  http: ^1.6.0
+  shared_preferences: ^2.5.5
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

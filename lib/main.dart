@@ -8,6 +8,14 @@ import 'package:kampus/page/pertemuan 10/auth/auth_page.dart';
 import 'firebase_options.dart';
 import 'package:intl/date_symbol_data_file.dart';
 
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http_parser/http_parser.dart';
+import '../pertemuan%2012/model/Product.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

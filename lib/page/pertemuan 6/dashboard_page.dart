@@ -7,6 +7,7 @@ import 'package:kampus/page/pertemuan%2010/home_page.dart';
 import 'package:kampus/page/pertemuan%207/pertemuan7.dart';
 import 'package:kampus/page/pertemuan%208/auto_complete.dart';
 import 'package:kampus/page/pertemuan%209/pertemuan9.dart';
+import 'package:kampus/pertemuan%2012/pages/home_page.dart';
 import 'package:kampus/row_widget.dart';
 import 'package:kampus/ui/produk_form.dart';
 
@@ -73,6 +74,12 @@ class DashboardPage extends StatelessWidget {
       "icon": Icons.auto_stories,
       "color": Colors.purple,
       "page": HomePage(),
+    },
+    {
+      "title": "Pertemuan 12",
+      "icon": Icons.auto_stories,
+      "color": Colors.purple,
+      "page": HomePage2(),
     },
   ];
 
