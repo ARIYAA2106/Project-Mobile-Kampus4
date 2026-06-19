@@ -2,56 +2,57 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http_parser/http_parser.dart';
 import '../model/Product.dart';
 
 class ApiService {
+  // FIX EMULATOR: Mengubah localhost menjadi 10.0.2.2 agar Android bisa mengakses Laragon PC
   static const String baseUrl = 'http://localhost:8000/api';
   static const String storageUrl = 'http://localhost:8000/storage';
 
+  // FIX LENGKAP: Mengubah imagePath dari database menjadi URL utuh yang valid untuk Android
   static String getImageUrl(String? imagePath) {
     if (imagePath == null || imagePath.isEmpty) return '';
 
-    // Untuk Laravel, gambar biasanya disimpan di storage/app/public/products/
-    // dan diakses melalui URL /storage/products/filename.jpg
-
     String cleanPath = imagePath.trim();
 
-    // Jika sudah URL lengkap, return as is
+    // 1. Jika backend mengembalikan URL lengkap (misal: mengandung http:// atau https://)
     if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
+      // Ubah kata 'localhost' menjadi IP emulator '10.0.2.2' agar gambar bisa terunduh di HP/Emulator
+      if (cleanPath.contains('localhost')) {
+        cleanPath = cleanPath.replaceAll('localhost', '10.0.2.2');
+      }
       return cleanPath;
     }
 
-    // Hapus 'storage/' jika ada (karena akan ditambah di base URL)
+    // 2. Jika backend hanya mengembalikan path relatif (misal: "products/nama_file.jpg")
     if (cleanPath.startsWith('storage/')) {
       cleanPath = cleanPath.substring(8);
     }
 
-    // Hapus 'products/' jika ada di awal (akan ditambah)
-    if (cleanPath.startsWith('products/')) {
-      // keep as is
-    } else if (!cleanPath.startsWith('/')) {
-      // Jika tidak ada products/ di awal, tambahkan
-      cleanPath = 'products/$cleanPath';
+    if (!cleanPath.startsWith('products/') &&
+        !cleanPath.startsWith('/products/')) {
+      if (!cleanPath.startsWith('/')) {
+        cleanPath = 'products/$cleanPath';
+      } else {
+        cleanPath = 'products$cleanPath';
+      }
     }
 
-    // Pastikan path dimulai dengan /
     if (!cleanPath.startsWith('/')) {
       cleanPath = '/$cleanPath';
     }
 
     print('========== IMAGE DEBUG ==========');
     print('Original: $imagePath');
-    print('Cleaned: $cleanPath');
-    print('Storage URL: $storageUrl');
-    print('Final URL: $storageUrl$cleanPath');
+    print('Cleaned Path: $cleanPath');
+    print('Final Target URL: $storageUrl$cleanPath');
     print('==================================');
 
     return '$storageUrl$cleanPath';
   }
 
-  // GET PRODUCTS - FIXED: Handle berbagai format response
+  // GET PRODUCTS
   static Future<List<Product>> getProducts() async {
     try {
       final response = await http
@@ -67,37 +68,24 @@ class ApiService {
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
 
-        // FIX: Handle response yang berbeda format
         if (decoded is List) {
-          // Response berupa array/list langsung
-          print('Response adalah List dengan ${decoded.length} item');
           return decoded.map((json) => Product.fromJson(json)).toList();
         } else if (decoded is Map<String, dynamic>) {
-          // Response berupa object
-          print('Response adalah Map dengan keys: ${decoded.keys}');
-
-          // Cek apakah ada key 'data' yang berisi list
           if (decoded.containsKey('data') && decoded['data'] is List) {
             return (decoded['data'] as List)
                 .map((json) => Product.fromJson(json))
                 .toList();
-          }
-          // Cek apakah ada key 'products' yang berisi list
-          else if (decoded.containsKey('products') &&
+          } else if (decoded.containsKey('products') &&
               decoded['products'] is List) {
             return (decoded['products'] as List)
                 .map((json) => Product.fromJson(json))
                 .toList();
-          }
-          // Cek apakah ada key 'result' yang berisi list
-          else if (decoded.containsKey('result') && decoded['result'] is List) {
+          } else if (decoded.containsKey('result') &&
+              decoded['result'] is List) {
             return (decoded['result'] as List)
                 .map((json) => Product.fromJson(json))
                 .toList();
-          }
-          // Jika hanya object tunggal, bungkus dalam list
-          else {
-            print('Response adalah object tunggal, membungkus ke dalam list');
+          } else {
             return [Product.fromJson(decoded)];
           }
         } else {
@@ -116,7 +104,7 @@ class ApiService {
     }
   }
 
-  // GET PRODUCT BY ID - FIXED
+  // GET PRODUCT BY ID
   static Future<Product> getProductById(int id) async {
     try {
       final response = await http
@@ -126,13 +114,10 @@ class ApiService {
           )
           .timeout(const Duration(seconds: 30));
 
-      print('Get Product By ID Status: ${response.statusCode}');
-
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
 
         if (decoded is Map<String, dynamic>) {
-          // Cek apakah ada wrapper
           if (decoded.containsKey('data') && decoded['data'] is Map) {
             return Product.fromJson(decoded['data']);
           }
@@ -150,7 +135,7 @@ class ApiService {
     }
   }
 
-  // REDUCE STOCK - FIXED
+  // REDUCE STOCK - FIXED METHOD (.patch)
   static Future<Product> reduceStock(int productId, int quantity) async {
     try {
       final response = await http
@@ -204,29 +189,50 @@ class ApiService {
     required String descriptions,
     required int price,
     required int stock,
-    //File? imageFile,
+    File? imageFile,
     Uint8List? imageBytes,
   }) async {
     try {
-      final response = await http.post(
+      final request = http.MultipartRequest(
+        'POST',
         Uri.parse('$baseUrl/products'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'name': name,
-          'descriptions': descriptions,
-          'price': price,
-          'stock': stock,
-        }),
       );
 
-      print('Create Product Response Status: ${response.statusCode}');
-      print('Create Product Response Body: ${response.body}');
+      request.headers['Accept'] = 'application/json';
 
-      if (response.statusCode == 201) {
-        final decoded = json.decode(response.body);
+      request.fields['name'] = name;
+      request.fields['descriptions'] = descriptions;
+      request.fields['price'] = price.toString();
+      request.fields['stock'] = stock.toString();
+
+      if (imageFile != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', imageFile.path),
+        );
+        print('Create Product: Gambar ditambahkan via File Path');
+      } else if (imageBytes != null) {
+        request.files.add(
+          http.MultipartFile.fromBytes(
+            'image',
+            imageBytes,
+            filename: 'product_${DateTime.now().millisecondsSinceEpoch}.jpg',
+            contentType: MediaType('image', 'jpeg'),
+          ),
+        );
+        print('Create Product: Gambar ditambahkan via Bytes');
+      }
+
+      final streamedResponse = await request.send().timeout(
+        const Duration(seconds: 30),
+      );
+      final responseBody = await streamedResponse.stream.bytesToString();
+
+      print('Create Product Response Status: ${streamedResponse.statusCode}');
+      print('Create Product Response Body: $responseBody');
+
+      if (streamedResponse.statusCode == 201 ||
+          streamedResponse.statusCode == 200) {
+        final decoded = json.decode(responseBody);
         if (decoded is Map<String, dynamic>) {
           if (decoded.containsKey('data') && decoded['data'] is Map) {
             return Product.fromJson(decoded['data']);
@@ -235,10 +241,12 @@ class ApiService {
         return Product.fromJson(decoded);
       } else {
         try {
-          final error = json.decode(response.body);
+          final error = json.decode(responseBody);
           throw Exception(error['message'] ?? 'Gagal membuat produk');
         } catch (e) {
-          throw Exception('Gagal membuat produk: ${response.statusCode}');
+          throw Exception(
+            'Gagal membuat produk: ${streamedResponse.statusCode}',
+          );
         }
       }
     } catch (e) {
@@ -263,20 +271,13 @@ class ApiService {
         Uri.parse('$baseUrl/products/$id'),
       );
 
+      request.headers['Accept'] = 'application/json';
       request.fields['_method'] = 'PUT';
 
-      if (name != null && name.isNotEmpty) {
-        request.fields['name'] = name;
-      }
-      if (descriptions != null) {
-        request.fields['descriptions'] = descriptions;
-      }
-      if (price != null) {
-        request.fields['price'] = price.toString();
-      }
-      if (stock != null) {
-        request.fields['stock'] = stock.toString();
-      }
+      if (name != null && name.isNotEmpty) request.fields['name'] = name;
+      if (descriptions != null) request.fields['descriptions'] = descriptions;
+      if (price != null) request.fields['price'] = price.toString();
+      if (stock != null) request.fields['stock'] = stock.toString();
 
       if (imageFile != null) {
         request.files.add(
@@ -288,6 +289,7 @@ class ApiService {
             'image',
             imageBytes,
             filename: 'product_${DateTime.now().millisecondsSinceEpoch}.jpg',
+            contentType: MediaType('image', 'jpeg'),
           ),
         );
       }
@@ -320,68 +322,21 @@ class ApiService {
     }
   }
 
-  // DEBUG: Test API Response
-  static Future<void> testApiResponse() async {
-    try {
-      print('Testing API Response...');
-      final response = await http
-          .get(Uri.parse('$baseUrl/products'))
-          .timeout(const Duration(seconds: 10));
-
-      print('Status Code: ${response.statusCode}');
-      print('Response Type: ${response.runtimeType}');
-      print('Response Body: ${response.body}');
-
-      final decoded = json.decode(response.body);
-      print('Decoded Type: ${decoded.runtimeType}');
-
-      if (decoded is List) {
-        print('Response adalah List dengan ${decoded.length} item');
-      } else if (decoded is Map) {
-        print('Response adalah Map dengan keys: ${decoded.keys}');
-        if (decoded.containsKey('data')) {
-          print(
-            'Key "data" ditemukan dengan tipe: ${decoded['data'].runtimeType}',
-          );
-        }
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  // Upload Image - VERSI BYTES
+  // UPLOAD IMAGE
   static Future<String> uploadImage(int productId, File imageFile) async {
     try {
-      print('========== UPLOAD DEBUG ==========');
-      print('Product ID: $productId');
-      print('File path: ${imageFile.path}');
-
       if (!await imageFile.exists()) {
         throw Exception('File tidak ditemukan');
       }
 
-      // Baca file sebagai bytes
       final bytes = await imageFile.readAsBytes();
-      final fileSize = bytes.length;
-      print(
-        'File size: $fileSize bytes (${(fileSize / 1024).toStringAsFixed(2)} KB)',
-      );
-
-      if (fileSize > 2 * 1024 * 1024) {
-        throw Exception('File terlalu besar (max 2MB)');
-      }
-
-      // Buat multipart request dari bytes
       var request = http.MultipartRequest(
         'POST',
         Uri.parse('$baseUrl/products/$productId/upload-image'),
       );
 
-      // Tambahkan header
       request.headers['Accept'] = 'application/json';
 
-      // Gunakan fromBytes, bukan fromPath
       var multipartFile = http.MultipartFile.fromBytes(
         'image',
         bytes,
@@ -390,16 +345,8 @@ class ApiService {
       );
       request.files.add(multipartFile);
 
-      print('Request URL: ${request.url}');
-      print('Request files count: ${request.files.length}');
-      print('File name: product_${DateTime.now().millisecondsSinceEpoch}.jpg');
-
       final response = await request.send();
       final responseBody = await response.stream.bytesToString();
-
-      print('Upload Response Status: ${response.statusCode}');
-      print('Upload Response Body: $responseBody');
-      print('==================================');
 
       if (response.statusCode == 200) {
         final decoded = json.decode(responseBody);
@@ -408,7 +355,6 @@ class ApiService {
         throw Exception('Upload gagal: ${response.statusCode} - $responseBody');
       }
     } catch (e) {
-      print('Upload image error: $e');
       throw Exception('Gagal upload gambar: $e');
     }
   }
