@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kampus/page/pertemuan 10/auth/auth_page.dart';
-import 'package:kampus/page/pertemuan%2010/auth/auth_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

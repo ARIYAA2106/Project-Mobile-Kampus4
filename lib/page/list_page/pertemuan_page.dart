@@ -4,7 +4,7 @@ import 'package:kampus/page/list_page/list_page.dart';
 class PertemuanPage extends StatelessWidget {
   final Pertemuan pertemuan;
 
-  PertemuanPage({Key? key, required this.pertemuan}) : super(key: key);
+  const PertemuanPage({super.key, required this.pertemuan});
 
   @override
   Widget build(BuildContext context) {

@@ -5,14 +5,14 @@ import 'package:kampus/page/profile_page.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class HalamanUtama extends StatefulWidget {
-  HalamanUtama({super.key});
+  const HalamanUtama({super.key});
 
   @override
   State<HalamanUtama> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<HalamanUtama> {
-  List<Widget> _page = [HomePage(), ProfilePage(), DashboardPage()];
+  final List<Widget> _page = [HomePage(), ProfilePage(), DashboardPage()];
 
   int currentPage = 0;
   @override

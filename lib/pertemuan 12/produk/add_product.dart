@@ -138,9 +138,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
     // Gambar lama dari server (saat edit)
     if (!_isImageChanged &&
         widget.product?.imageUrl != null &&
-        widget.product!.imageUrl!.isNotEmpty) {
+        widget.product!.imageUrl.isNotEmpty) {
       return Image.network(
-        widget.product!.imageUrl!,
+        widget.product!.imageUrl,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,

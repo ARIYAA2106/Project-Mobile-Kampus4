@@ -12,7 +12,7 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPage extends State<BerandaPage> {
-  List<Widget> _page = [BerandaPage(), ProfilePage()];
+  final List<Widget> _page = [BerandaPage(), ProfilePage()];
 
   int currentPage = 0;
 

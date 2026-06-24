@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckboxPage extends StatefulWidget {
+  const CheckboxPage({super.key});
+
   @override
   _FormCheckboxExampleState createState() => _FormCheckboxExampleState();
 }
@@ -17,7 +19,7 @@ class _FormCheckboxExampleState extends State<CheckboxPage> {
   String _errorText = '';
 
   // Hobby checkboxes
-  Map<String, bool> _hobbies = {
+  final Map<String, bool> _hobbies = {
     'Membaca': false,
     'Olahraga': false,
     'Musik': false,
@@ -351,12 +353,20 @@ class _FormCheckboxExampleState extends State<CheckboxPage> {
               SizedBox(height: 24),
 
               // Submit Button
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
                     _validateAndSubmit(context);
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue.shade700,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                  ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 14),
                     child: Text(
@@ -367,14 +377,6 @@ class _FormCheckboxExampleState extends State<CheckboxPage> {
                         letterSpacing: 1.5,
                       ),
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade700,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 4,
                   ),
                 ),
               ),
@@ -510,16 +512,16 @@ class _FormCheckboxExampleState extends State<CheckboxPage> {
                         gravity: ToastGravity.TOP,
                       );
                     },
-                    child: Text(
-                      'OK',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 45),
                       backgroundColor: Colors.blue.shade700,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                    ),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],

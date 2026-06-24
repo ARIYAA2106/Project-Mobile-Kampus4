@@ -4,7 +4,7 @@ import 'package:kampus/page/list_page/pertemuan_page.dart';
 import 'package:kampus/page/profile_page.dart';
 
 class ListPage extends StatefulWidget {
-  ListPage({super.key});
+  const ListPage({super.key});
 
   @override
   State<ListPage> createState() => _ListPageState();

@@ -189,8 +189,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
             _fetchProducts();
           }
         },
-        child: const Icon(Icons.add),
         tooltip: 'Tambah Produk',
+        child: const Icon(Icons.add),
       ), // FloatingActionButton
     ); // Scaffold
   }
@@ -422,9 +422,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget _buildProductImage(Product product) {
     print('Product image field: ${product.image}');
     print('Product imageUrl: ${product.imageUrl}');
-    
+
     // Jika tidak ada gambar, tampilkan placeholder
-    if (product.image == null || product.image!.isEmpty || product.imageUrl.isEmpty) {
+    if (product.image == null ||
+        product.image!.isEmpty ||
+        product.imageUrl.isEmpty) {
       return Container(
         width: 70,
         height: 70,

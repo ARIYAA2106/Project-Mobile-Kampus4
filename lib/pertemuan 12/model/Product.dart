@@ -56,12 +56,12 @@ class Product {
   //Getter untuk URL gambar
   String get imageUrl {
     if (image == null || image!.isEmpty) return '';
-    
+
     // Jika sudah URL lengkap, return as is
     if (image!.startsWith('http://') || image!.startsWith('https://')) {
       return image!;
     }
-    
+
     // Jika hanya filename/path, bangun URL
     return ApiService.getImageUrl(image!);
   }
@@ -72,5 +72,5 @@ class Product {
 
   // Helper untuk status stok
   String get stockStatus => stock > 0 ? 'Tersedia: $stock' : 'Stok Habis';
-  get stockColor => stock > 0 ? Colors.green : Colors.red;
+  MaterialColor get stockColor => stock > 0 ? Colors.green : Colors.red;
 }

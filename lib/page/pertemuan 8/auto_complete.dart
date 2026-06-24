@@ -472,7 +472,7 @@ class _CompleteFormPageState extends State<AutocompletespinPage> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           hint: Text(hint, style: TextStyle(color: Colors.grey[400])),
           decoration: InputDecoration(
             border: OutlineInputBorder(

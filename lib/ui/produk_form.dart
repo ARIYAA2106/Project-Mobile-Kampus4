@@ -29,40 +29,40 @@ class _Produkformstate extends State<ProdukForm> {
     );
   }
 
-  _textboxkodeProduk() {
+  TextField _textboxkodeProduk() {
     return TextField(
       decoration: InputDecoration(labelText: "Kode Produk"),
       controller: _kodeProdukTextboxController,
     );
   }
 
-  _textboxnamaProduk() {
+  TextField _textboxnamaProduk() {
     return TextField(
       decoration: InputDecoration(labelText: "Nama Produk"),
       controller: _namaProdukTextboxController,
     );
   }
 
-  _textboxhargaProduk() {
+  TextField _textboxhargaProduk() {
     return TextField(
       decoration: InputDecoration(labelText: "Harga Produk"),
       controller: _hargaProdukTextboxController,
     );
   }
 
-  _tombolSimpan() {
+  ElevatedButton _tombolSimpan() {
     return ElevatedButton(
       child: Text("Simpan"),
       onPressed: () {
-        String kode_produk = _kodeProdukTextboxController.text;
-        String nama_produk = _namaProdukTextboxController.text;
+        String kodeProduk = _kodeProdukTextboxController.text;
+        String namaProduk = _namaProdukTextboxController.text;
         int harga = int.parse(_hargaProdukTextboxController.text);
 
         Navigator.of(context).push(
-          new MaterialPageRoute(
+          MaterialPageRoute(
             builder: (context) => ProdukDetail(
-              kodeProduk: kode_produk,
-              namaProduk: nama_produk,
+              kodeProduk: kodeProduk,
+              namaProduk: namaProduk,
               hargaProduk: harga,
             ),
           ),

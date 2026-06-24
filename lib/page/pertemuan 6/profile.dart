@@ -45,12 +45,15 @@ class _ProfilePageState extends State<ProfilePage> {
       if (updatedData['email'] != null) email = updatedData['email'];
       if (updatedData['phone'] != null) phone = updatedData['phone'];
       if (updatedData['birthday'] != null) birthday = updatedData['birthday'];
-      if (updatedData['occupation'] != null)
+      if (updatedData['occupation'] != null) {
         occupation = updatedData['occupation'];
-      if (updatedData['avatarUrl'] != null)
+      }
+      if (updatedData['avatarUrl'] != null) {
         avatarUrl = updatedData['avatarUrl'];
-      if (updatedData['avatarFile'] != null)
+      }
+      if (updatedData['avatarFile'] != null) {
         avatarFile = updatedData['avatarFile'];
+      }
       if (updatedData['skills'] != null) skills = updatedData['skills'];
     });
   }

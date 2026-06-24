@@ -31,7 +31,7 @@ class _CompleteRadioButtonFormState extends State<RadiobuttonPage>
     {
       'value': 'Guru',
       'icon': Icons.school,
-      'color': Color(0xFFF9C27B0),
+      'color': Color(0xfff9c27b0),
       'description': 'Mendidik generasi',
     },
     {
@@ -167,10 +167,12 @@ class _CompleteRadioButtonFormState extends State<RadiobuttonPage>
                             hint: 'Masukkan nama lengkap Anda',
                             icon: Icons.person_outline,
                             validator: (value) {
-                              if (value == null || value.isEmpty)
+                              if (value == null || value.isEmpty) {
                                 return 'Nama tidak boleh kosong';
-                              if (value.length < 3)
+                              }
+                              if (value.length < 3) {
                                 return 'Nama minimal 3 karakter';
+                              }
                               return null;
                             },
                           ),
@@ -182,11 +184,13 @@ class _CompleteRadioButtonFormState extends State<RadiobuttonPage>
                             icon: Icons.cake_outlined,
                             keyboardType: TextInputType.number,
                             validator: (value) {
-                              if (value == null || value.isEmpty)
+                              if (value == null || value.isEmpty) {
                                 return 'Umur tidak boleh kosong';
+                              }
                               int? age = int.tryParse(value);
-                              if (age == null || age < 17 || age > 100)
+                              if (age == null || age < 17 || age > 100) {
                                 return 'Umur harus antara 17-100 tahun';
+                              }
                               return null;
                             },
                           ),
@@ -858,7 +862,7 @@ class _CompleteRadioButtonFormState extends State<RadiobuttonPage>
               ),
             ],
           ),
-          content: Container(
+          content: SizedBox(
             width: double.maxFinite,
             child: Column(
               mainAxisSize: MainAxisSize.min,

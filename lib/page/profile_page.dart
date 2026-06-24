@@ -4,7 +4,7 @@ import 'package:kampus/page/beranda_page.dart';
 import 'package:kampus/page/experience_form_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Sesuai Gambar 7fad65
-  List<Widget> _page = [BerandaPage(), ProfilePage()];
+  final List<Widget> _page = [BerandaPage(), ProfilePage()];
   int currentPage = 0;
 
   @override
@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 // Profile
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   height: 200,
                   child: Container(

@@ -301,7 +301,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     print('URL yang digunakan: $imageUrl');
     print('==================================');
 
-    if (imageUrl != null && imageUrl.isNotEmpty) {
+    if (imageUrl.isNotEmpty) {
       return Hero(
         tag: 'product_image_${_product.id}',
         child: SizedBox(
@@ -461,7 +461,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ), // BoxDecoration
             child: Text(
               (_product.descriptions ?? '').isNotEmpty
-                  ? _product.descriptions!
+                  ? _product.descriptions
                   : 'Tidak ada deskripsi',
               style: const TextStyle(fontSize: 16, height: 1.5),
             ), // Text

@@ -5,7 +5,8 @@ class ProdukDetail extends StatefulWidget {
   final String namaProduk;
   final int hargaProduk;
 
-  ProdukDetail({
+  const ProdukDetail({
+    super.key,
     required this.kodeProduk,
     required this.namaProduk,
     required this.hargaProduk,
