@@ -8,28 +8,27 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use App\Models\Product;
+use App\Models\Inventory;
 
-class ProductController extends Controller
+class InventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::all();
+        $inventories = Inventory::all();
 
-        // Tambahkan image_url ke setiap produk
-        $products->each(function($product) {
-            $product->image_url = $product->image
-                ? asset('storage/' . $product->image)
+        $inventories->each(function($inventory) {
+            $inventory->image_url = $inventory->image
+                ? asset('storage/' . $inventory->image)
                 : null;
         });
 
         return response()->json([
             'success' => true,
-            'data' => $products,
-            'message' => 'Data produk berhasil diambil'
+            'data' => $inventories,
+            'message' => 'Data inventory berhasil diambil'
         ], Response::HTTP_OK);
     }
 
@@ -38,53 +37,42 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->isMethod('post') && $request->hasHeader('Content-Type')) {
-            $contentType = $request->header('Content-Type');
-            if (str_contains($contentType, 'multipart/form-data')) {
-                // Parse multipart manually
-                $data = $request->all();
-                // ... handle multipart
-            }
-        }
-
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name'         => 'required|string|max:255',
             'descriptions' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Validasi gambar
+            'price'        => 'required|numeric|min:0',
+            'stock'        => 'required|integer|min:0',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors'  => $validator->errors()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $product = new Product();
-        $product->name = $request->name;
-        $product->descriptions = $request->descriptions;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
+        $inventory = new Inventory();
+        $inventory->name         = $request->name;
+        $inventory->descriptions = $request->descriptions;
+        $inventory->price        = $request->price;
+        $inventory->stock        = $request->stock;
 
-        // Upload gambar jika ada
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $product->image = $path;
+            $path = $request->file('image')->store('inventories', 'public');
+            $inventory->image = $path;
         }
 
-        $product->save();
+        $inventory->save();
 
-        // Tambahkan image_url ke response
-        $product->image_url = $product->image
-            ? asset('storage/' . $product->image)
+        $inventory->image_url = $inventory->image
+            ? asset('storage/' . $inventory->image)
             : null;
 
         return response()->json([
             'success' => true,
-            'data' => $product,
-            'message' => 'Product created successfully'
+            'data'    => $inventory,
+            'message' => 'Inventory created successfully'
         ], Response::HTTP_CREATED);
     }
 
@@ -93,34 +81,33 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::find($id);
+        $inventory = Inventory::find($id);
 
-        if (!$product) {
+        if (!$inventory) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Inventory not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        // Tambahkan image_url
-        $product->image_url = $product->image
-            ? asset('storage/' . $product->image)
+        $inventory->image_url = $inventory->image
+            ? asset('storage/' . $inventory->image)
             : null;
 
         return response()->json([
             'success' => true,
-            'data' => $product
+            'data' => $inventory
         ], Response::HTTP_OK);
     }
 
     public function update(Request $request, string $id)
     {
-        $product = Product::find($id);
+        $inventory = Inventory::find($id);
 
-        if (!$product) {
+        if (!$inventory) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Inventory not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -129,7 +116,7 @@ class ProductController extends Controller
             'descriptions' => 'nullable|string',
             'price' => 'sometimes|required|numeric|min:0',
             'stock' => 'sometimes|required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Validasi gambar
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -139,34 +126,30 @@ class ProductController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        // Update field teks
-        if ($request->has('name')) $product->name = $request->name;
-        if ($request->has('descriptions')) $product->descriptions = $request->descriptions;
-        if ($request->has('price')) $product->price = $request->price;
-        if ($request->has('stock')) $product->stock = $request->stock;
+        if ($request->has('name')) $inventory->name = $request->name;
+        if ($request->has('descriptions')) $inventory->descriptions = $request->descriptions;
+        if ($request->has('price')) $inventory->price = $request->price;
+        if ($request->has('stock')) $inventory->stock = $request->stock;
 
-        // Upload gambar baru (hapus gambar lama)
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            if ($inventory->image && Storage::disk('public')->exists($inventory->image)) {
+                Storage::disk('public')->delete($inventory->image);
             }
 
-            $path = $request->file('image')->store('products', 'public');
-            $product->image = $path;
+            $path = $request->file('image')->store('inventories', 'public');
+            $inventory->image = $path;
         }
 
-        $product->save();
+        $inventory->save();
 
-        // Tambahkan image_url ke response
-        $product->image_url = $product->image
-            ? asset('storage/' . $product->image)
+        $inventory->image_url = $inventory->image
+            ? asset('storage/' . $inventory->image)
             : null;
 
         return response()->json([
             'success' => true,
-            'data' => $product,
-            'message' => 'Product updated successfully'
+            'data' => $inventory,
+            'message' => 'Inventory updated successfully'
         ], Response::HTTP_OK);
     }
 
@@ -175,39 +158,38 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::find($id);
+        $inventory = Inventory::find($id);
 
-        if (!$product) {
+        if (!$inventory) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Inventory not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        // Hapus file gambar jika ada
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
-            Storage::disk('public')->delete($product->image);
+        if ($inventory->image && Storage::disk('public')->exists($inventory->image)) {
+            Storage::disk('public')->delete($inventory->image);
         }
 
-        $product->delete();
+        $inventory->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Product deleted successfully'
+            'message' => 'Inventory deleted successfully'
         ], Response::HTTP_OK);
     }
 
     /**
-     * Reduce product stock (custom method untuk Flutter)
+     * Reduce inventory stock (custom method untuk Flutter)
      */
     public function reduceStock(Request $request, string $id)
     {
-        $product = Product::find($id);
+        $inventory = Inventory::find($id);
 
-        if (!$product) {
+        if (!$inventory) {
             return response()->json([
                 'success' => false,
-                'message' => 'Product not found'
+                'message' => 'Inventory not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -224,23 +206,23 @@ class ProductController extends Controller
 
         $quantity = $request->quantity;
 
-        if ($product->stock < $quantity) {
+        if ($inventory->stock < $quantity) {
             return response()->json([
                 'success' => false,
-                'message' => 'Insufficient stock. Available: ' . $product->stock
+                'message' => 'Insufficient stock. Available: ' . $inventory->stock
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $product->stock -= $quantity;
-        $product->save();
+        $inventory->stock -= $quantity;
+        $inventory->save();
 
-        $product->image_url = $product->image
-            ? asset('storage/' . $product->image)
+        $inventory->image_url = $inventory->image
+            ? asset('storage/' . $inventory->image)
             : null;
 
         return response()->json([
             'success' => true,
-            'data' => $product,
+            'data' => $inventory,
             'message' => "Stock reduced by $quantity"
         ], Response::HTTP_OK);
     }
@@ -250,15 +232,15 @@ class ProductController extends Controller
     {
         try {
             Log::info('Upload image called', [
-                'product_id' => $id,
+                'inventory_id' => $id,
                 'has_file' => $request->hasFile('image'),
                 'all_files' => $request->allFiles(),
                 'all_input' => $request->all()
             ]);
 
-            $product = Product::find($id);
-            if (!$product) {
-                return response()->json(['message' => 'Product not found'], 404);
+            $inventory = Inventory::find($id);
+            if (!$inventory) {
+                return response()->json(['message' => 'Inventory not found'], 404);
             }
 
             // 🔥 Cek apakah ada file yang dikirim
@@ -292,12 +274,12 @@ class ProductController extends Controller
             }
 
             // Hapus gambar lama
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            if ($inventory->image && Storage::disk('public')->exists($inventory->image)) {
+                Storage::disk('public')->delete($inventory->image);
             }
 
             // Simpan dengan cara manual
-            $destinationPath = storage_path('app/public/products');
+            $destinationPath = storage_path('app/public/inventories');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
             }
@@ -306,12 +288,12 @@ class ProductController extends Controller
             $filename = $originalName . '_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move($destinationPath, $filename);
 
-            $product->image = 'products/' . $filename;
-            $product->save();
+            $inventory->image = 'inventories/' . $filename;
+            $inventory->save();
 
             return response()->json([
                 'success' => true,
-                'image_url' => asset('storage/products/' . $filename)
+                'image_url' => asset('storage/inventories/' . $filename)
             ], 200);
 
         } catch (\Exception $e) {

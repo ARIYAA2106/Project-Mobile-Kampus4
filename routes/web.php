@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,8 +13,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route Cetak PDF
-Route::get('/product/cetak-pdf', [ProductController::class, 'cetakPdf'])
-    ->name('product.cetakPdf');
+Route::get('/inventory/cetak-pdf', [InventoryController::class, 'cetakPdf'])
+    ->name('inventory.cetakPdf');
 
 Route::middleware('auth')->group(function () {
 
@@ -34,27 +34,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
         ->name('profile.photo.destroy');
 
-    // Route Product
-    Route::get('/product', [ProductController::class, 'index'])
-        ->name('product.index');
+    // Route Inventory Gudang
+    Route::get('/inventory', [InventoryController::class, 'index'])
+        ->name('inventory.index');
 
-    Route::get('/product/create', [ProductController::class, 'create'])
-        ->name('product.create');
+    Route::get('/inventory/create', [InventoryController::class, 'create'])
+        ->name('inventory.create');
 
-    Route::post('/product', [ProductController::class, 'store'])
-        ->name('product.store');
+    Route::post('/inventory', [InventoryController::class, 'store'])
+        ->name('inventory.store');
 
-    Route::get('/product/{id}', [ProductController::class, 'show'])
-        ->name('product.show');
+    Route::get('/inventory/{id}', [InventoryController::class, 'show'])
+        ->name('inventory.show');
 
-    Route::get('/product/{id}/edit', [ProductController::class, 'edit'])
-        ->name('product.edit');
+    Route::get('/inventory/{id}/edit', [InventoryController::class, 'edit'])
+        ->name('inventory.edit');
 
-    Route::put('/product/{id}', [ProductController::class, 'update'])
-        ->name('product.update');
+    Route::put('/inventory/{id}', [InventoryController::class, 'update'])
+        ->name('inventory.update');
 
-    Route::delete('/product/{id}', [ProductController::class, 'destroy'])
-        ->name('product.destroy');
+    Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])
+        ->name('inventory.destroy');
 });
 
 require __DIR__.'/auth.php';

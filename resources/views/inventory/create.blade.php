@@ -1,16 +1,16 @@
 
-{{-- resources/views/product/create.blade.php --}}
+{{-- resources/views/inventory/create.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Tambah Produk
+            Tambah Inventory Gudang
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-white p-6 rounded shadow">
 
-            <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Nama --}}
@@ -88,7 +88,7 @@
                 Simpan
                </button>
 
-                <a href="{{ route('product.index') }}" class="ml-2 text-gray-600">
+                <a href="{{ route('inventory.index') }}" class="ml-2 text-gray-600">
                     Batal
                 </a>
 

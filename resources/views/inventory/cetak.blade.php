@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Data Product</title>
+    <title>Data Inventory Gudang</title>
 
     <style>
         body {
@@ -57,21 +57,22 @@
 
 <body>
 
-    <h3>DATA PRODUCT</h3>
+    <h3>DATA INVENTORY GUDANG</h3>
 
     <table>
         <thead>
             <tr>
                 <th width="5%" class="text-center">No</th>
-                <th width="20%">Nama Product</th>
+                <th width="20%">Nama Barang</th>
                 <th width="15%" class="text-center">Gambar</th>
-                <th width="40%">Deskripsi</th>
-                <th width="20%" class="text-right">Harga</th>
+                <th width="35%">Deskripsi</th>
+                <th width="15%" class="text-right">Harga</th>
+                <th width="10%" class="text-center">Stok</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse($product as $index => $p)
+            @forelse($inventories as $index => $p)
                 <tr>
                     <td class="text-center">
                         {{ $loop->iteration }}
@@ -106,11 +107,15 @@
                     <td class="text-right">
                         Rp {{ number_format($p->price, 0, ',', '.') }}
                     </td>
+
+                    <td class="text-center">
+                        {{ $p->stock ?? '-' }}
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center">
-                        Tidak ada data product
+                    <td colspan="6" class="text-center">
+                        Tidak ada data inventory
                     </td>
                 </tr>
             @endforelse

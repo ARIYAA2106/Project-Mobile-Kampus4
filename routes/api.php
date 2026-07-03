@@ -1,26 +1,25 @@
 <?php
 
-use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\InventoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('products', ProductController::class);
+Route::apiResource('inventories', InventoryController::class);
 
 Route::post(
-    'products/{id}/upload-image',
-    [ProductController::class, 'uploadImage']
+    'inventories/{id}/upload-image',
+    [InventoryController::class, 'uploadImage']
 );
 
 // Route custom untuk mengurangi stok
 Route::patch(
-    'products/{id}/reduce-stock',
-    [ProductController::class, 'reduceStock']
+    'inventories/{id}/reduce-stock',
+    [InventoryController::class, 'reduceStock']
 );
 
 // Akses gambar via API
 Route::get('/image/{filename}', function ($filename) {
-
-    $path = storage_path('app/public/products/' . $filename);
+    $path = storage_path('app/public/inventories/' . $filename);
 
     if (!file_exists($path)) {
         return response()->json([
@@ -31,7 +30,6 @@ Route::get('/image/{filename}', function ($filename) {
     return response()->file($path, [
         'Access-Control-Allow-Origin' => '*'
     ]);
-
 })->where('filename', '.*');
 
 // Check API

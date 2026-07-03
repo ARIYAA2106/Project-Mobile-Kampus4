@@ -1,16 +1,16 @@
 
-{{-- resources/views/product/edit.blade.php --}}
+{{-- resources/views/inventory/edit.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Edit Produk
+            Edit Inventory Gudang
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-yellow p-6 rounded shadow">
 
-            <form action="{{ route('product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('inventory.update', $inventory->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -20,7 +20,7 @@
                     <input
                         type="text"
                         name="name"
-                        value="{{ old('name', $product->name) }}"
+                        value="{{ old('name', $inventory->name) }}"
                         class="w-full border rounded p-2">
 
                     @error('name')
@@ -43,15 +43,15 @@
                 </div>
 
                 {{-- TAMPILKAN GAMBAR SAAT INI --}}
-                @if ($product->image)
+                @if ($inventory->image)
                     <div class="mb-4">
                         <p class="text-sm text-gray-600">
                             Gambar saat ini :
                         </p>
 
                         <img
-                            src="{{ asset('storage/' . $product->image) }}"
-                            alt="Product Image"
+                            src="{{ asset('storage/' . $inventory->image) }}"
+                            alt="Inventory Image"
                             width="120"
                             class="rounded shadow">
                     </div>
@@ -62,7 +62,7 @@
                     <label>Descriptions</label>
                     <textarea
                         name="descriptions"
-                        class="w-full border rounded p-2">{{ old('descriptions', $product->descriptions) }}</textarea>
+                        class="w-full border rounded p-2">{{ old('descriptions', $inventory->descriptions) }}</textarea>
 
                     @error('descriptions')
                         <small class="text-red-600">{{ $message }}</small>
@@ -75,7 +75,7 @@
                     <input
                         type="text"
                         name="price"
-                        value="{{ old('price', $product->price) }}"
+                        value="{{ old('price', $inventory->price) }}"
                         class="w-full border rounded p-2">
 
                     @error('price')
@@ -89,7 +89,7 @@
                     <input
                         type="number"
                         name="stock"
-                        value="{{ old('stock', $product->stock) }}"
+                        value="{{ old('stock', $inventory->stock) }}"
                         class="w-full border rounded p-2">
 
                     @error('stock')
@@ -101,7 +101,7 @@
                     Update
                 </button>
 
-                <a href="{{ route('product.index') }}" class="ml-2 text-gray-600">
+                <a href="{{ route('inventory.index') }}" class="ml-2 text-gray-600">
                     Batal
                 </a>
 

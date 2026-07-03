@@ -1,8 +1,8 @@
-{{-- resources/views/product/index.blade.php --}}
+{{-- resources/views/inventory/index.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Data Product
+            Data Inventory Gudang
         </h2>
     </x-slot>
 
@@ -12,18 +12,18 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <h3 class="text-lg font-semibold mb-4">
-                        Data Product
+                        Data Inventory Gudang
                     </h3>
 
                     {{-- Tombol Tambah --}}
                     <div class="flex justify-end mb-4 gap-3">
 
-                        <a href="{{ route('product.create') }}"
+                        <a href="{{ route('inventory.create') }}"
                            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-black rounded-lg shadow font-semibold">
-                            Tambah Product
+                            Tambah Inventory
                         </a>
 
-                        <a href="{{ route('product.cetakPdf') }}"
+                        <a href="{{ route('inventory.cetakPdf') }}"
                            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-black rounded-lg shadow font-semibold">
                             Cetak PDF
                         </a>
@@ -31,9 +31,9 @@
                     </div>
 
                     {{-- Notifikasi --}}
-                    @if(session('Berhasil'))
+                    @if(session('success'))
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                            {{ session('Berhasil') }}
+                            {{ session('success') }}
                         </div>
                     @endif
 
@@ -52,7 +52,7 @@
                         </thead>
 
                         <tbody>
-                            @forelse($product as $row)
+                            @forelse($inventories as $row)
                                 <tr class="hover:bg-gray-50">
 
                                     <td class="p-2 border text-center">
@@ -95,16 +95,16 @@
                                     <td class="p-2 border">
                                         <div class="flex flex-wrap gap-2 justify-center">
 
-                                           <a href="{{ route('product.show', $row->id) }}"
+                                           <a href="{{ route('inventory.show', $row->id) }}"
                                             class="inline-flex items-center px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                                             Lihat
                                              </a>
-                                            <a href="{{ route('product.edit', $row->id) }}"
+                                            <a href="{{ route('inventory.edit', $row->id) }}"
                                                class="inline-flex items-center px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-black rounded text-sm">
                                                 Edit
                                             </a>
 
-                                            <form action="{{ route('product.destroy', $row->id) }}"
+                                            <form action="{{ route('inventory.destroy', $row->id) }}"
                                                   method="POST"
                                                   class="inline">
                                                 @csrf
@@ -124,7 +124,7 @@
                             @empty
                                 <tr>
                                     <td colspan="7" class="text-center p-4 text-gray-500">
-                                        Belum ada data product.
+                                        Belum ada data inventory.
                                     </td>
                                 </tr>
                             @endforelse
